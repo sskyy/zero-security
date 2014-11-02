@@ -1,14 +1,12 @@
 {
   "name": "zero-security",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "zero module",
-  "dependencies" : {
-
-  },
+  "dependencies": {},
   "zero": {
     "dependencies": {
       "configure": "^0.0.1",
-      "bus" : "^0.0.1"
+      "bus": "^0.0.1"
     }
   },
   "author": "jiamiu"
