@@ -1,8 +1,10 @@
 {
   "name": "zero-security",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "zero module",
-  "dependencies": {},
+  "dependencies": {
+    "xss": "^0.1.12"
+  },
   "zero": {
     "dependencies": {
       "configure": "^0.0.1",
