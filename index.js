@@ -2,16 +2,27 @@ var crypto = require('crypto'),
   xss = require('xss'),
   _ = require('lodash')
 
+function secureModel( val, attributeName, func){
+  if( val&&val[attributeName]){
+    val[attributeName] = func(val[attributeName])
+  }
+}
 
 function generateListener( modelName, attributeName, strategy){
   var listen = {}
   _.forEach( strategy, function(func, event){
-    listen[modelName+"."+event] = function( val , updateObj){
-      if( val[attributeName]){
+
+    listen[modelName+"."+event] = function secureAttributes( val , updateObj){
+
+      if(_.isArray( val)){
+        _.forEach(val, function(model){
+          secureModel(model, attributeName, func)
+        })
+      }else{
         if( /update$/.test( event)){
-          updateObj[attributeName] = func(updateObj[attributeName])
+          secureModel(updateObj, attributeName, func)
         }else{
-          val[attributeName] = func(val[attributeName])
+          secureModel(val, attributeName, func)
         }
       }
     }
@@ -51,6 +62,26 @@ var securityModule= {
       "create.before": function (origin) {
         return xss(origin, {})
       }
+    },
+    password : {
+      "create.before" : function( origin ){
+        return securityModule.encrypt(origin)
+      },
+      "update.before" : function( origin ){
+        return securityModule.encrypt(origin)
+      },
+      "find.before" : function( origin ){
+        return securityModule.encrypt(origin)
+      },
+      "findOne.before" : function( origin ){
+        return securityModule.encrypt(origin)
+      },
+      "find.after" : function( record ){
+        return undefined
+      },
+      "findOne.after" : function( record ){
+        return undefined
+      }
     }
   },
   expand : function( module ){
@@ -59,7 +90,7 @@ var securityModule= {
       _.forEach( module.models, function( model){
         _.forEach( model.security, function( strategies, attributeName){
           _.forEach( strategies, function( strategy){
-            root.listen = generateListener(  model.identity, attributeName, root.strategy[strategy])
+            _.extend(root.listen , generateListener(  model.identity, attributeName, root.strategy[strategy]))
           })
         })
       })
