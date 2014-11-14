@@ -81,6 +81,9 @@ var securityModule= {
       },
       "findOne.after" : function( record ){
         return undefined
+      },
+      "update.after" : function( record ){
+        return undefined
       }
     }
   },
