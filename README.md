@@ -1,6 +1,6 @@
 # zero-security #
 
-This module can help you to secure your model.
+This module secure relier's model with varied strategies.
 
 ## Usage ##
 

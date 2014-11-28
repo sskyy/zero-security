@@ -1,7 +1,10 @@
 {
   "name": "zero-security",
-  "version": "0.0.6",
-  "description": "zero module",
+  "version": "0.0.7",
+  "keywords": [
+    "zero module"
+  ],
+  "description": "This module secure relier's model with varied strategies.",
   "dependencies": {
     "xss": "^0.1.12"
   },
